@@ -1,0 +1,11 @@
+target/
+__pycache__/
+*.pyc
+.venv/
+.env
+.DS_Store
+wp_zips/
+wp_extracted/
+downloads/
+plugins.csv
+.ruff_cache/
