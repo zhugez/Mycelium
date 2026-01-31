@@ -1,105 +1,105 @@
 # Mycelium
 
-**Mycelium** là một công cụ dòng lệnh (CLI) hiệu suất cao được viết bằng **Rust**, được thiết kế để tự động hóa việc tìm kiếm, tải xuống và phân tích các plugin WordPress phổ biến từ kho lưu trữ chính thức WordPress.org.
+**Mycelium** is a high-performance command-line tool (CLI) written in **Rust**, designed to automate the process of searching, downloading, and analyzing popular WordPress plugins from the official WordPress.org repository.
 
-Dự án này giúp các nhà nghiên cứu bảo mật, lập trình viên hoặc nhà phân tích dữ liệu dễ dàng thu thập mẫu plugin số lượng lớn để nghiên cứu hoặc kiểm tra.
+This project assists security researchers, developers, or data analysts in easily collecting large volumes of plugin samples for research or testing purposes.
 
-## 🚀 Tính năng nổi bật
+## 🚀 Key Features
 
-*   **Tốc độ cao**: Tận dụng sức mạnh của Rust và `tokio` để xử lý không đồng bộ, cho phép tải xuống và xử lý dữ liệu cực nhanh.
-*   **Tải xuống song song**: Hỗ trợ đa luồng (multi-threading) để tải xuống hàng trăm plugin cùng lúc mà không bị tắc nghẽn.
-*   **Bộ lọc thông minh**: Cho phép lọc plugin dựa trên mức độ phổ biến (số lượng cài đặt kích hoạt - Active Installs).
-*   **Tự động hóa**: Tự động tải file ZIP, giải nén (extract) và tổ chức thư mục gọn gàng.
-*   **Xuất báo cáo**: Lưu danh sách plugin, phiên bản và trạng thái tải xuống vào file CSV (`plugins.csv`) để dễ dàng quản lý.
+*   **High Speed**: Leverages the power of Rust and `tokio` for asynchronous processing, enabling extremely fast data downloading and handling.
+*   **Parallel Downloading**: Supports multi-threading to download hundreds of plugins simultaneously without bottlenecks.
+*   **Smart Filtering**: Allows filtering plugins based on popularity (Active Installs).
+*   **Automation**: Automatically downloads ZIP files, extracts them, and organizes the directory structure neatly.
+*   **Reporting**: Exports a list of plugins, versions, and download statuses to a CSV file (`plugins.csv`) for easy management.
 
-## 📋 Yêu cầu hệ thống
+## 📋 System Requirements
 
-*   **Rust**: Phiên bản ổn định mới nhất (để biên dịch từ mã nguồn). Cài đặt tại [rustup.rs](https://rustup.rs/).
-*   **Kết nối Internet**: Để kết nối với API của WordPress.org.
+*   **Rust**: Latest stable version (to compile from source). Install via [rustup.rs](https://rustup.rs/).
+*   **Internet Connection**: Required to connect to the WordPress.org API.
 
-## 🛠️ Cài đặt & Biên dịch (Build)
+## 🛠️ Installation & Build
 
-1.  **Clone repository:**
+1.  **Clone the repository:**
     ```bash
     git clone https://github.com/zhugez/Mycelium.git
     cd Mycelium
     ```
 
-2.  **Biên dịch dự án:**
-    Để có hiệu suất tốt nhất, hãy build ở chế độ `release`:
+2.  **Build the project:**
+    For best performance, build in `release` mode:
     ```bash
     cargo build --release
     ```
-    Sau khi build xong, file thực thi sẽ nằm tại:
+    After building, the executable will be located at:
     *   Windows: `target/release/mycelium.exe`
     *   Linux/macOS: `target/release/mycelium`
 
-## 📖 Hướng dẫn sử dụng
+## 📖 Usage Guide
 
-Bạn có thể chạy trực tiếp bằng `cargo run` hoặc sử dụng file binary đã build.
+You can run it directly using `cargo run` or use the built binary.
 
-### Cú pháp cơ bản
+### Basic Syntax
 
 ```bash
 mycelium [OPTIONS]
 ```
 
-### Các tùy chọn (Options)
+### Options
 
-| Tùy chọn (Short/Long) | Mặc định | Mô tả |
+| Option (Short/Long) | Default | Description |
 | :--- | :--- | :--- |
-| `-m`, `--min-active` | `10000` | Số lượng cài đặt kích hoạt tối thiểu để tải về. |
-| `-p`, `--pages` | `50` | Số lượng trang kết quả cần quét (API WordPress phân trang). |
-| `--per-page` | `100` | Số lượng plugin trên mỗi trang. |
-| `-w`, `--workers` | `5` | Số lượng luồng (workers) tải xuống song song. |
-| `-o`, `--output-dir` | `wp_zips` | Thư mục lưu trữ các file `.zip` tải về. |
-| `-e`, `--extract` | `false` | Bật cờ này để tự động giải nén sau khi tải xong. |
-| `--extract-dir` | `wp_extracted`| Thư mục chứa các plugin đã được giải nén. |
-| `-c`, `--csv-path` | `plugins.csv`| Đường dẫn file CSV báo cáo kết quả. |
-| `--list-only` | `false` | Chỉ quét và liệt kê danh sách, không tải xuống. |
+| `-m`, `--min-active` | `10000` | Minimum number of active installs to download. |
+| `-p`, `--pages` | `50` | Number of result pages to scan (WordPress API uses pagination). |
+| `--per-page` | `100` | Number of plugins per page. |
+| `-w`, `--workers` | `5` | Number of parallel download threads (workers). |
+| `-o`, `--output-dir` | `wp_zips` | Directory to store downloaded `.zip` files. |
+| `-e`, `--extract` | `false` | Enable this flag to automatically extract after downloading. |
+| `--extract-dir` | `wp_extracted`| Directory for extracted plugins. |
+| `-c`, `--csv-path` | `plugins.csv`| Path to the CSV report file. |
+| `--list-only` | `false` | Only scan and list plugins, do not download. |
 
-### Ví dụ minh họa
+### Examples
 
-1.  **Quét và tải các plugin cực kỳ phổ biến** (trên 100,000 cài đặt), lưu vào thư mục `hot_plugins`:
+1.  **Scan and download extremely popular plugins** (over 100,000 installs), saving to `hot_plugins` folder:
     ```bash
     cargo run -- -m 100000 -o hot_plugins
     ```
 
-2.  **Tải và giải nén ngay lập tức** 10 trang plugin đầu tiên:
+2.  **Download and immediately extract** the first 10 pages of plugins:
     ```bash
     cargo run -- --pages 10 --extract
     ```
 
-3.  **Chỉ lấy danh sách (không tải)** để xem trước:
+3.  **List only (no download)** for preview:
     ```bash
     cargo run -- --list-only
     ```
 
-## 🐍 Phiên bản Python
+## 🐍 Python Version
 
-Dự án cũng đi kèm một file `index.py`. Đây là phiên bản prototype (nguyên mẫu) được viết bằng Python. Nó có chức năng tương tự nhưng có thể chậm hơn phiên bản Rust. Bạn có thể dùng nó để tham khảo logic hoặc chạy thử nghiệm nhanh nếu đã cài sẵn Python và `uv`/`pip`.
+The project also includes an `index.py` file. This is a prototype version written in Python. It performs similar functions but may be slower than the Rust version. You can use it for logic reference or quick testing if you have Python and `uv`/`pip` installed.
 
-Cách chạy (yêu cầu cài các thư viện trong script):
+To run (requires installing libraries in the script):
 ```bash
 uv run python index.py
 ```
 
-## 📄 Cấu trúc dự án
+## 📄 Project Structure
 
 ```text
 Mycelium/
 ├── src/
-│   ├── main.rs       # Entry point, xử lý tham số dòng lệnh
-│   ├── api.rs        # Tương tác với WordPress.org API
-│   ├── fs_ops.rs     # Xử lý file: tải xuống, giải nén ZIP
-│   ├── csv_ops.rs    # Đọc/Ghi file CSV
-│   ├── models.rs     # Các struct dữ liệu (Plugin, DownloadResult)
-│   └── error.rs      # Quản lý lỗi tập trung
-├── index.py          # Phiên bản Python (Prototype)
-├── Cargo.toml        # Cấu hình dependency Rust
-└── README.md         # Tài liệu hướng dẫn
+│   ├── main.rs       # Entry point, CLI argument handling
+│   ├── api.rs        # Interaction with WordPress.org API
+│   ├── fs_ops.rs     # File operations: download, ZIP extraction
+│   ├── csv_ops.rs    # CSV Read/Write
+│   ├── models.rs     # Data structs (Plugin, DownloadResult)
+│   └── error.rs      # Centralized error management
+├── index.py          # Python Version (Prototype)
+├── Cargo.toml        # Rust dependency configuration
+└── README.md         # Documentation
 ```
 
-## 🤝 Đóng góp
+## 🤝 Contribution
 
-Mọi đóng góp đều được hoan nghênh! Hãy mở Issues hoặc Pull Requests trên GitHub để cải thiện dự án.
+All contributions are welcome! Please open Issues or Pull Requests on GitHub to improve the project.
